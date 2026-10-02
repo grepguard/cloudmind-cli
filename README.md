@@ -1,0 +1,2 @@
+# cloudmind-cli
+Cloudmind CLI
