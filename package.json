@@ -1,0 +1,36 @@
+{
+  "name": "cloudmind",
+  "version": "0.0.1",
+  "description": "Cloudmind CLI",
+  "homepage": "https://github.com/grepguard/cloudmind-cli#readme",
+  "bugs": {
+    "url": "https://github.com/grepguard/cloudmind-cli/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/grepguard/cloudmind-cli.git"
+  },
+  "license": "MIT",
+  "author": "bereilhp",
+  "type": "module",
+  "bin": {
+    "cloudmind": "./bin/cloudmind.js"
+  },
+  "main": "index.js",
+  "scripts": {
+    "format": "biome format --write",
+    "lint": "biome lint --write",
+    "check": "biome check --write",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "chalk": "^5.6.2",
+    "commander": "^15.0.0",
+    "inquirer": "^14.0.2",
+    "marked": "^15.0.12",
+    "marked-terminal": "^7.3.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.14"
+  }
+}
