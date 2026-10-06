@@ -21,7 +21,7 @@ npm link
 cloudmind add do
 ```
 
->**Note**: The CLI securely prompts for the provider token. Settings are saved locally in `~/.config/cloudmind/config.json` with owner-only file permissions.
+>**Note**: The CLI prompts for the provider token and settings are saved locally in `~/.config/cloudmind/config.json` with owner-only file permissions.
 
 ## List providers
 
