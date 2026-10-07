@@ -4,12 +4,14 @@ on:
   push:
     tags:
       - "v*.*.*"
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
   release:
+    if: github.ref_type == 'tag'
     name: Create GitHub Release
     runs-on: ubuntu-latest
     steps:
