@@ -1,7 +1,14 @@
 {
   "name": "cloudmind",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Cloudmind CLI",
+  "keywords": [
+    "cloudmind",
+    "cli",
+    "cloud",
+    "cloud-scanning",
+    "infrastructure"
+  ],
   "homepage": "https://github.com/grepguard/cloudmind-cli#readme",
   "bugs": {
     "url": "https://github.com/grepguard/cloudmind-cli/issues"

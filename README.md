@@ -8,15 +8,24 @@ Scan cloud resources and ask questions about your cloud.
 npm install -g cloudmind
 ```
 
-Requires Node.js 24.13.0 or later.
+> **Note:** Requires Node.js 24.13.0 or later.
 
 ## Get started
 
-Save your DigitalOcean token:
+| Name                  | ID       | Supported |
+| --------------------- | -------- | --------- |
+| DigitalOcean          | `do`     | ✓         |
+| Microsoft Azure       | `azure`  | —         |
+| Google Cloud Platform | `gcp`    | —         |
+| AWS                   | `aws`    | —         |
+
+Save your cloud provider's read-only API token:
 
 ```sh
 cloudmind add do
 ```
+
+> **Note:** Credentials are stored locally in `~/.config/cloudmind/config.json` with owner-only permissions.
 
 Scan resources:
 
@@ -27,7 +36,5 @@ cloudmind --provider do scan
 Ask a question:
 
 ```sh
-cloudmind --provider do ask "Any unattached volumes or idle droplets?"
+cloudmind --provider do ask "How many droplets are in the nyc3 region?"
 ```
-
-Credentials are stored locally in `~/.config/cloudmind/config.json` with owner-only permissions.
