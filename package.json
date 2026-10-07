@@ -13,15 +13,23 @@
   "license": "MIT",
   "author": "bereilhp",
   "type": "module",
+  "engines": {
+    "node": ">=24.13.0"
+  },
   "bin": {
     "cloudmind": "./bin/cloudmind.js"
   },
-  "main": "index.js",
+  "files": [
+    "bin/",
+    "src/",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "format": "biome format --write",
     "lint": "biome lint --write",
     "check": "biome check --write",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "check:ci": "biome check"
   },
   "dependencies": {
     "chalk": "^5.6.2",

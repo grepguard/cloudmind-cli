@@ -1,42 +1,33 @@
 # Cloudmind CLI
 
-A small CLI for scanning cloud resources and asking questions about them.
+Scan cloud resources and ask questions about your cloud.
 
-## Install for local development
+## Install
 
 ```sh
-npm install
-npm link
+npm install -g cloudmind
 ```
 
-## Providers
+Requires Node.js 24.13.0 or later.
 
-| ID   | Name         |
-| ---- | ------------ |
-| `do` | DigitalOcean |
+## Get started
 
-## Save a provider token
+Save your DigitalOcean token:
 
 ```sh
 cloudmind add do
 ```
 
->**Note**: The CLI prompts for the provider token and settings are saved locally in `~/.config/cloudmind/config.json` with owner-only file permissions.
-
-## List providers
-
-```sh
-cloudmind providers
-```
-
-## Scan resources
+Scan resources:
 
 ```sh
 cloudmind --provider do scan
 ```
 
-## Ask a question
+Ask a question:
 
 ```sh
 cloudmind --provider do ask "Any unattached volumes or idle droplets?"
 ```
+
+Credentials are stored locally in `~/.config/cloudmind/config.json` with owner-only permissions.
