@@ -2,7 +2,6 @@ import chalk from "chalk";
 import inquirer from "inquirer";
 import { CONFIG_PATH } from "./constants.js";
 
-// Single prompt style for the whole CLI: cyan `>` while asking, green `✔` when done.
 const promptTheme = {
   prefix: {
     idle: chalk.cyan(">"),
@@ -15,7 +14,11 @@ export function printStorageLocation() {
   console.log(`  ${chalk.cyan(CONFIG_PATH)} ${chalk.dim("(mode 0600)")}\n`);
 }
 
-export async function promptForProviderCredentials(provider, existing) {
+export async function promptForProviderCredentials(
+  provider,
+  existing,
+  credentialLabel = "API token:",
+) {
   printStorageLocation();
 
   if (existing?.token) {
@@ -38,11 +41,10 @@ export async function promptForProviderCredentials(provider, existing) {
     {
       type: "password",
       name: "token",
-      // Never reveal the token: no ctrl+t toggle, always masked.
       mask: "•",
       toggleMask: false,
       theme: promptTheme,
-      message: chalk.bold("API token:"),
+      message: chalk.bold(credentialLabel),
       validate: (value) =>
         value.trim().length > 0
           ? true

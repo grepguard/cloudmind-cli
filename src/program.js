@@ -11,7 +11,7 @@ export function buildProgram() {
     .name("cloudmind")
     .description("Scan cloud resources and ask questions about them")
     .option("-p, --provider <provider>", "provider to use")
-    .version(VERSION, "-V, --version", "output the version number")
+    .version(VERSION, "-v, --version", "output the version number")
     .showHelpAfterError();
 
   registerAddCommand(program);

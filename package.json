@@ -21,7 +21,7 @@
   "author": "bereilhp",
   "type": "module",
   "engines": {
-    "node": ">=24.13.0"
+    "node": ">=24.22.1"
   },
   "bin": {
     "cloudmind": "./bin/cloudmind.js"

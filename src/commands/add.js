@@ -1,6 +1,7 @@
 import chalk from "chalk";
 import {
   getCredentials,
+  getOpenAIKey,
   normalizeProvider,
   readConfig,
   writeConfig,
@@ -19,6 +20,20 @@ export function registerAddCommand(program) {
       );
 
       const config = await readConfig();
+      if (normalizedProvider === "openai") {
+        const existingKey = getOpenAIKey(config);
+        const answers = await promptForProviderCredentials(
+          "OpenAI",
+          existingKey ? { token: existingKey } : undefined,
+          "OpenAI API key:",
+        );
+        if (!answers) return;
+        config.openai = { apiKey: answers.token.trim() };
+        await writeConfig(config);
+        printSaved("OpenAI");
+        return;
+      }
+
       config.providers ??= {};
 
       const answers = await promptForProviderCredentials(

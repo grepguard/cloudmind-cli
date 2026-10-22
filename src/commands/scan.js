@@ -1,11 +1,10 @@
-import { requestJson } from "../api.js";
 import {
   readConfig,
   requireCredentials,
   requireProviderName,
 } from "../config.js";
-import { API_BASE_URL } from "../constants.js";
 import { printScanResult } from "../output.js";
+import { runDoScan } from "../providers/do/scan.js";
 
 export function registerScanCommand(program) {
   program
@@ -15,10 +14,10 @@ export function registerScanCommand(program) {
       const provider = requireProviderName(program);
       const config = await readConfig();
       const credentials = requireCredentials(config, provider);
-      const result = await requestJson(
-        `${API_BASE_URL}/${provider}/scan`,
-        credentials.token,
-      );
+      if (provider !== "do") {
+        throw new Error(`Provider "${provider}" is not supported yet.`);
+      }
+      const result = await runDoScan(credentials.token);
       printScanResult(provider, result);
     });
 }

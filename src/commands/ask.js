@@ -1,12 +1,13 @@
-import { requestJson } from "../api.js";
 import {
   readConfig,
   requireCredentials,
+  requireOpenAIKey,
   requireProviderName,
 } from "../config.js";
-import { API_BASE_URL } from "../constants.js";
+import { answerQuestion } from "../openai.js";
 import { printAnswer } from "../output.js";
 import { promptForQuestion } from "../prompts.js";
+import { runDoScan } from "../providers/do/scan.js";
 
 export function registerAskCommand(program) {
   program
@@ -18,14 +19,12 @@ export function registerAskCommand(program) {
 
       const config = await readConfig();
       const credentials = requireCredentials(config, provider);
-      const result = await requestJson(
-        `${API_BASE_URL}/ask`,
-        credentials.token,
-        {
-          method: "POST",
-          body: JSON.stringify({ provider, question: prompt }),
-        },
-      );
+      if (provider !== "do") {
+        throw new Error(`Provider "${provider}" is not supported yet.`);
+      }
+      const apiKey = requireOpenAIKey(config);
+      const scan = await runDoScan(credentials.token);
+      const result = await answerQuestion(apiKey, provider, prompt, scan);
       printAnswer(provider, result);
     });
 }

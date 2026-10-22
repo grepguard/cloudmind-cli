@@ -1,13 +1,15 @@
 import chalk from "chalk";
-import { API_BASE_URL, CONFIG_PATH, SCAN_RESOURCE_KEYS } from "./constants.js";
+import { CONFIG_PATH, SCAN_RESOURCE_KEYS } from "./constants.js";
 import { renderMarkdown } from "./markdown.js";
 
 export function printSaved(provider) {
   console.log(chalk.green(`\n✔ Saved "${provider}" credentials.`));
   console.log(`  ${chalk.dim("→")} ${chalk.cyan(CONFIG_PATH)}`);
-  console.log(
-    chalk.dim(`\nNext: ${chalk.cyan(`cloudmind --provider ${provider} scan`)}`),
-  );
+  const next =
+    provider.toLowerCase() === "openai"
+      ? 'cloudmind --provider do ask "How can I optimize my infrastructure?"'
+      : `cloudmind --provider ${provider} scan`;
+  console.log(chalk.dim(`\nNext: ${chalk.cyan(next)}`));
 }
 
 function maskToken(token) {
@@ -18,18 +20,22 @@ function maskToken(token) {
 
 export function printProviders(config) {
   const entries = Object.entries(config.providers ?? {});
+  const openaiConfigured = Boolean(
+    process.env.OPENAI_API_KEY || config.openai?.apiKey,
+  );
 
-  if (entries.length === 0) {
-    console.log(chalk.yellow("No providers saved yet."));
+  if (entries.length === 0 && !openaiConfigured) {
+    console.log(chalk.yellow("No credentials configured yet."));
     console.log(
-      chalk.dim(`Run ${chalk.cyan("cloudmind add <provider>")} to save one.`),
+      chalk.dim(
+        `Run ${chalk.cyan("cloudmind add do")} for DigitalOcean and ${chalk.cyan("cloudmind add openai")} to enable ask.`,
+      ),
     );
     console.log(chalk.dim(`Storage: ${CONFIG_PATH}`));
     return;
   }
 
-  console.log(chalk.bold(`Saved providers (${entries.length})`));
-  console.log(chalk.dim(`API: ${API_BASE_URL}`));
+  console.log(chalk.bold(`Saved cloud providers (${entries.length})`));
   console.log(chalk.dim(`Storage: ${CONFIG_PATH}\n`));
 
   for (const [name, credentials] of entries) {
@@ -37,6 +43,10 @@ export function printProviders(config) {
       `  ${chalk.green("✔")} ${chalk.bold.cyan(name)}  ${maskToken(credentials?.token)}`,
     );
   }
+
+  console.log(
+    `  ${openaiConfigured ? chalk.green("✔") : chalk.dim("○")} ${chalk.bold.cyan("OpenAI")}  ${openaiConfigured ? chalk.dim("API key configured") : chalk.dim("not configured (ask requires it)")}`,
+  );
 }
 
 export function printScanResult(provider, result) {
@@ -53,6 +63,13 @@ export function printScanResult(provider, result) {
     for (const [name, count] of Object.entries(result.summary)) {
       const styledCount = count === 0 ? `${count}` : chalk.bold.green(count);
       console.log(`  ${name.replaceAll("_", " ")}: ${styledCount}`);
+    }
+  }
+
+  if (result.errors && typeof result.errors === "object") {
+    console.log(chalk.yellow("\nSome resources could not be scanned:"));
+    for (const [name, error] of Object.entries(result.errors)) {
+      console.log(`  ${name}: ${error}`);
     }
   }
 

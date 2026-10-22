@@ -47,3 +47,20 @@ export function requireCredentials(config, provider) {
   }
   return credentials;
 }
+
+export function getOpenAIKey(config) {
+  const apiKey = process.env.OPENAI_API_KEY || config.openai?.apiKey;
+  return typeof apiKey === "string" && apiKey.trim()
+    ? apiKey.trim()
+    : undefined;
+}
+
+export function requireOpenAIKey(config) {
+  const apiKey = getOpenAIKey(config);
+  if (!apiKey) {
+    throw new Error(
+      `No OpenAI API key configured. Run: ${chalk.cyan("cloudmind add openai")} or set OPENAI_API_KEY.`,
+    );
+  }
+  return apiKey;
+}

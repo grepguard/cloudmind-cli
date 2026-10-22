@@ -10,7 +10,7 @@ cd cloudmind-cli
 npm install
 ```
 
-This package requires Node.js 24.13.0 or later.
+This package requires Node.js 24.22.1 or later.
 
 ## Link the CLI locally
 
