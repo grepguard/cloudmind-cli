@@ -51,7 +51,9 @@ cloudmind --provider <id> <command>
 
 | Provider | ID | Status | Resources scanned |
 | --- | --- | --- | --- |
-| DigitalOcean | `do` | Supported | Droplets, volumes, databases, Kubernetes clusters, domains, load balancers |
+| DigitalOcean | `do` | Supported | Droplets, volumes, databases, Kubernetes clusters, domains, load balancers, App Platform apps |
 | Microsoft Azure | `azure` | Planned | — |
 | Google Cloud Platform | `gcp` | Planned | — |
 | AWS | `aws` | Planned | — |
+
+>***Note:*** Each DigitalOcean resource request fetches up to 200 items of that type—for example, 200 droplets or 200 volumes.

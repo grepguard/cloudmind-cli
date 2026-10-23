@@ -15,4 +15,5 @@ export const SCAN_RESOURCE_KEYS = [
   "kubernetes",
   "domains",
   "loadbalancers",
+  "apps",
 ];

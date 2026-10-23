@@ -7,6 +7,7 @@ const TARGETS = {
   kubernetes: "/v2/kubernetes/clusters?per_page=200",
   domains: "/v2/domains?per_page=200",
   loadbalancers: "/v2/load_balancers?per_page=200",
+  apps: "/v2/apps?per_page=200",
 };
 
 export async function runDoScan(token) {
@@ -104,6 +105,34 @@ export async function runDoScan(token) {
     }),
   );
 
+  const apps = (data.apps?.apps || []).map((app) => {
+    const deployment = app.active_deployment;
+    const spec = deployment?.spec || app.spec;
+    const components = [
+      "services",
+      "workers",
+      "jobs",
+      "functions",
+      "static_sites",
+    ].flatMap((type) =>
+      (spec?.[type] || []).map((component) => ({
+        name: component.name,
+        type,
+      })),
+    );
+
+    return {
+      id: app.id,
+      name: app.spec?.name || spec?.name || app.id,
+      region: spec?.region,
+      status: app.progress?.phase,
+      url: app.default_ingress || app.live_url || null,
+      components,
+      created_at: app.created_at,
+      updated_at: app.updated_at,
+    };
+  });
+
   const summary = {
     droplets: droplets.length,
     volumes: volumes.length,
@@ -111,6 +140,7 @@ export async function runDoScan(token) {
     kubernetes_clusters: kubernetes.length,
     domains: domains.length,
     loadbalancers: loadbalancers.length,
+    apps: apps.length,
   };
   summary.total_resources = Object.values(summary).reduce(
     (total, count) => total + count,
@@ -127,6 +157,7 @@ export async function runDoScan(token) {
     kubernetes,
     domains,
     loadbalancers,
+    apps,
   };
   if (Object.keys(errors).length > 0) result.errors = errors;
   return result;
